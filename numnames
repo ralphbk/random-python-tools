@@ -18,6 +18,7 @@
 
 import math
 import sys
+import cgi
 
 class numnames:
 
@@ -116,9 +117,39 @@ class numnames:
             return "Sorry, that's too big for me."
         return self.numnames(int(num))
 
-def main(argv):
-    n=numnames()
-    print "%s == %s" % (argv[0], n.checkandtranslate(argv[0]))
+print 'Content-type: text/html\n\n'
+form = cgi.FieldStorage()   # FieldStorage object to
+                            # hold the form data
 
-if __name__ == "__main__":
-    main(sys.argv[1:])
+number=None
+# check whether a field called "number" was used...
+# it might be used multiple times (so sep w/ commas)
+if form.has_key('number'):
+    number = form["number"].value
+n=numnames()
+words = n.checkandtranslate(number)
+
+print """<html>
+<head>
+<title>Number to Words</title>
+</head>
+<body style="font-family:verdana">
+<h1>Display a Number in Words</h1>
+<form name="input" action="numnames" method="get">
+ <table>
+ <tr>
+  <td><b>Number:</b></td>
+  <td><input type="text" name="number" value="%s" />
+  <input type="submit" value="Submit" /></td>
+ </tr>
+ <tr>
+  <td><b>Words:</b></td>
+  <td>%s</td>
+ </tr>
+ </table> 
+</form>
+<p style="font-size:50%%">Brought to you by <a href="http://www.bearpark.ch/who/ralph">Ralph Bearpark</a>.</p>
+</body>
+</html>
+""" % (number, words)
+
