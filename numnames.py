@@ -106,10 +106,8 @@ class numnames:
         return retstr
 
     def checkandtranslate( self, num ):
-	if num == None:
+        if num == None:
             return "Please enter a number that you want to be displayed in words."
-        if len(str(num)) > 63:
-            return "Sorry, that's too big for me."
         if not str(num).isdigit():
             return "Sorry, you should give me digits only." 
         if len(str(num)) > 63:
